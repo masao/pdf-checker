@@ -1,0 +1,54 @@
+* PDF check utitility
+
+This tool is able to check PDF properties/contents in a batch mode.
+It currently checks the following properties of PDF files:
+
+- Number of pages
+- PDF version
+- (On each page):
+-- Number of characters (text length) within a page
+-- DPI (dot-per-inch) resolution of embbed images within a page
+-- Filetype of embbed images
+
+** How to use
+
+Download the binary package and unpack it. And then run the jar file
+with specifying the targeted PDF files on command line:
+
+  % unzip pdf-checker-20110116.zip
+  % java -jar PdfChecker.jar ~/pdf/2010J00*.pdf
+  Filename:       /home/masao/pdf/2010J0001.pdf
+  PDF version:    3
+  Number of pages:        4
+  Encryption:     false
+  Page size (1):  Rectangle: 595.0x842.0 (rot: 0 degrees)
+  Image filetype: png
+  DPI-X:  398
+  DPI-Y:  398
+  Text length:    0
+  Page size (2):  Rectangle: 595.0x842.0 (rot: 0 degrees)
+  Image filetype: png
+  DPI-X:  398
+  DPI-Y:  398
+  Text length:    0
+  Page size (3):  Rectangle: 595.0x842.0 (rot: 0 degrees)
+  Image filetype: png
+  DPI-X:  398
+  DPI-Y:  398
+  Text length:    0
+  Page size (4):  Rectangle: 595.0x842.0 (rot: 0 degrees)
+  Image filetype: png
+  DPI-X:  398
+  DPI-Y:  398
+  .....
+
+An example above means that the file parsed is PDF version 3, having
+3 pages, and not encrypted. Each page of this file has a size of
+"595x842" without rotation and an embedded file of (approximately) 400
+DPI resolution with PNG-style compression and
+
+  
+** Links
+
+This tool uses and bundles iText PDF Library. Source codes and
+detailed information is available at <http://itextpdf.com/>
