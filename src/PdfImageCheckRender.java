@@ -16,7 +16,13 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.itextpdf.text.BadElementException;
 
 public class PdfImageCheckRender implements RenderListener {
-    Rectangle pagesize;
+    private final Rectangle pagesize;
+    private final StringBuffer result = new StringBuffer();;
+
+    public String getResultantText() {
+	return result.toString();
+    }
+    
     /**
      * Creates a RenderListener that will look for images.
      */
@@ -68,6 +74,9 @@ public class PdfImageCheckRender implements RenderListener {
      *     com.itextpdf.text.pdf.parser.TextRenderInfo)
      */
     public void renderText(TextRenderInfo renderInfo) {
+	String content_str = renderInfo.getText();
+	//System.out.println( "Text length:\t" + content_str.length() );
+	result.append( content_str );
     }
 }
  

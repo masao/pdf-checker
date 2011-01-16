@@ -15,6 +15,7 @@ public class PdfChecker {
 	    System.out.println( "Page size (" + i + "):\t" + pdf.getPageSize( i ) );
 	    PdfImageCheckRender listener = new PdfImageCheckRender( pdf.getPageSize(i) );
             parser.processContent(i, listener);
+	    System.out.println( "Text length:\t" + listener.getResultantText().length() );
         }
     }
     public static void main( String[] argv ) throws IOException {
