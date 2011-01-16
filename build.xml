@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <project name="pdf-checker" default="jar">
   <property name="name" value="pdf-checker" />
+  <tstamp/>
 
   <property name="jarfile" value="PdfChecker.jar"/>
 
@@ -37,11 +38,18 @@
   </target>
 
   <target name="dist" depends="jar">
-    <tstamp/>
     <zip zipfile="${name}-${DSTAMP}.zip" basedir="." includes="${jarfile} ${manifest.classpath}" />
   </target>
 
   <target name="clean">
-    <remove name="${name}-${DSTAMP}.zip"/>
+    <delete>
+      <fileset dir=".">
+        <include name="src/*.class"/>
+        <include name="${jarfile}"/>
+	<include name="${name}-${DSTAMP}.zip"/>
+        <include name="**/*~"/>
+        <include name="**/*.bak"/>
+      </fileset>
+    </delete>
   </target>
 </project>
