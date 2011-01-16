@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project name="pdf-checker" default="jar">
+  <property name="name" value="pdf-checker" />
+
+  <property name="jarfile" value="PdfChecker.jar"/>
+
+  <property name="src" location="src"/>
+  <property name="lib" location="lib"/>
+
+  <path id="build.classes">
+    <fileset dir="lib" includes="*.jar"/>
+  </path>
+
+  <pathconvert property="manifest.classpath" pathsep=" ">
+    <path refid="build.classes"/>
+    <mapper>
+      <chainedmapper>
+         <flattenmapper/>
+         <globmapper from="*.jar" to="lib/*.jar"/>
+      </chainedmapper>
+    </mapper>
+  </pathconvert>
+  
+  <target name="compile">
+    <javac srcdir="${src}">
+      <classpath refid="build.classes"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar destfile="${jarfile}" basedir="${src}/">
+      <manifest>
+        <attribute name="Main-Class" value="PdfChecker"/>
+        <attribute name="Class-Path" value=". ${manifest.classpath}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="dist" depends="jar">
+    <tstamp/>
+    <zip zipfile="${name}-${DSTAMP}.zip" basedir="." includes="${jarfile} ${manifest.classpath}" />
+  </target>
+
+  <target name="clean">
+    <remove name="${name}-${DSTAMP}.zip"/>
+  </target>
+</project>
