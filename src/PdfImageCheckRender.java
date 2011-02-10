@@ -3,6 +3,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Set;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.awt.image.BufferedImage; 
 import javax.imageio.ImageIO;
  
@@ -17,11 +18,15 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.itextpdf.text.BadElementException;
 
 public class PdfImageCheckRender implements RenderListener {
-    private final Rectangle pagesize;
-    private final StringBuffer result = new StringBuffer();;
+    private Rectangle pagesize;
+    private StringBuffer result = new StringBuffer();
+    private ArrayList pageinfo =  new ArrayList();
 
     public String getResultantText() {
 	return result.toString();
+    }
+    public ArrayList getPageInfo() {
+	return pageinfo;
     }
     
     /**
@@ -62,18 +67,19 @@ public class PdfImageCheckRender implements RenderListener {
 	    //int height = img_obj.getDictionary().getAsNumber( PdfName.HEIGHT ).intValue();
 	    //System.out.println( width + "x" + height );
 	    Image image = Image.getInstance( img_obj.getImageAsBytes() );
-	    System.out.println( "Image filetype:\t" + img_obj.getFileType() );
+	    pageinfo.add( img_obj.getFileType() );
+	    //System.out.print( "Image filetype:\t" + img_obj.getFileType() );
 	    if ( image.getDpiX() > 0 && image.getDpiX() > 0 ) {
-		System.out.println( "DPI-X:\t" + image.getDpiX() );
-		System.out.println( "DPI-Y:\t" + image.getDpiY() );
+		pageinfo.add( image.getDpiX() );
+		pageinfo.add( image.getDpiY() );
+		//System.out.println( "DPI-X:\t" + image.getDpiX() );
+		//System.out.println( "DPI-Y:\t" + image.getDpiY() );
 	    } else {
-		//System.out.println( "Plain width:\t" + image.getPlainWidth() );
-		//System.out.println( "Plain height:\t" + image.getPlainHeight() );	
-		//System.out.println( "Scaled width:\t" + image.getScaledWidth() );
-		//System.out.println( "Scaled height:\t" + image.getScaledHeight() );
-		System.out.println( "DPI-X:\t" + (int)( image.getScaledWidth() / pagesize.getWidth() * 72f ) );
-		System.out.println( "DPI-Y:\t" + (int)( image.getScaledHeight() / pagesize.getHeight() * 72f ) );
-    }
+		pageinfo.add( image.getScaledWidth() / pagesize.getWidth() * 72f );
+		pageinfo.add( image.getScaledHeight() / pagesize.getHeight() * 72f );
+		//System.out.println( "DPI-X:\t" + (int)( image.getScaledWidth() / pagesize.getWidth() * 72f ) );
+		//System.out.println( "DPI-Y:\t" + (int)( image.getScaledHeight() / pagesize.getHeight() * 72f ) );
+	    }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (BadElementException e) {
@@ -91,4 +97,3 @@ public class PdfImageCheckRender implements RenderListener {
 	result.append( content_str );
     }
 }
- 
