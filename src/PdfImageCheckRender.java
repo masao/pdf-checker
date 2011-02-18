@@ -18,21 +18,21 @@ import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.itextpdf.text.BadElementException;
 
 public class PdfImageCheckRender implements RenderListener {
+    private String filename;
+    private int page;
     private Rectangle pagesize;
     private StringBuffer result = new StringBuffer();
-    private ArrayList pageinfo =  new ArrayList();
 
     public String getResultantText() {
 	return result.toString();
     }
-    public ArrayList getPageInfo() {
-	return pageinfo;
-    }
-    
+
     /**
      * Creates a RenderListener that will look for images.
      */
-    public PdfImageCheckRender( Rectangle pagesize ) {
+    public PdfImageCheckRender( String filename, int page, Rectangle pagesize ) {
+	this.filename = filename;
+	this.page     = page;
 	this.pagesize = pagesize;
     }
  
@@ -58,27 +58,22 @@ public class PdfImageCheckRender implements RenderListener {
             //PdfName filter = (PdfName)img_obj.get(PdfName.FILTER);
 	    //System.out.println( "Image filter:\t" + filter );
 	    //System.out.println( "Image dictionary:\t" + img_obj.getDictionary() );
-// 	    Set keys = img_obj.getDictionary().getKeys();
-// 	    Iterator i = keys.iterator();
-// 	    while( i.hasNext() ) {
-// 		System.out.println( i.next().toString() );
-// 	    }
+	    //Set keys = img_obj.getDictionary().getKeys();
+ 	    //Iterator i = keys.iterator();
+ 	    //while( i.hasNext() ) {
+	    //   System.out.println( i.next().toString() );
+	    //}
 	    //int width = img_obj.getDictionary().getAsNumber( PdfName.WIDTH ).intValue();
 	    //int height = img_obj.getDictionary().getAsNumber( PdfName.HEIGHT ).intValue();
 	    //System.out.println( width + "x" + height );
 	    Image image = Image.getInstance( img_obj.getImageAsBytes() );
-	    pageinfo.add( img_obj.getFileType() );
-	    //System.out.print( "Image filetype:\t" + img_obj.getFileType() );
+	    System.out.println( filename + "\timagetype (" +page+ ")\t" + img_obj.getFileType() );
 	    if ( image.getDpiX() > 0 && image.getDpiX() > 0 ) {
-		pageinfo.add( image.getDpiX() );
-		pageinfo.add( image.getDpiY() );
-		//System.out.println( "DPI-X:\t" + image.getDpiX() );
-		//System.out.println( "DPI-Y:\t" + image.getDpiY() );
+		System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getDpiX() );
+		System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getDpiY() );
 	    } else {
-		pageinfo.add( image.getScaledWidth() / pagesize.getWidth() * 72f );
-		pageinfo.add( image.getScaledHeight() / pagesize.getHeight() * 72f );
-		//System.out.println( "DPI-X:\t" + (int)( image.getScaledWidth() / pagesize.getWidth() * 72f ) );
-		//System.out.println( "DPI-Y:\t" + (int)( image.getScaledHeight() / pagesize.getHeight() * 72f ) );
+		System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getScaledWidth() / pagesize.getWidth() * 72f );
+		System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getScaledHeight() / pagesize.getHeight() * 72f );
 	    }
         } catch (IOException e) {
             e.printStackTrace();
