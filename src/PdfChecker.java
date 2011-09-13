@@ -38,6 +38,7 @@ public class PdfChecker {
 	    String prop = (String) ite.next();
 	    output( filename, prop.toLowerCase(), map.get( prop ) );
 	}
+	output( filename, "pages", pdf.getNumberOfPages() );
 	PdfReaderContentParser parser = new PdfReaderContentParser( pdf );
         for (int i = 1; i <= pdf.getNumberOfPages(); i++) {
 	    output( filename, "page"+i, "pagesize", pdf.getPageSize( i ) );
