@@ -112,7 +112,7 @@ public class PdfImageCheckRender implements RenderListener {
 	    System.out.println( filename + "\tdpi-x (" +page+ ")\t" + width / pagesize.getWidth() * 72f );
 	    System.out.println( filename + "\tdpi-y (" +page+ ")\t" + height / pagesize.getHeight() * 72f );
 	} else {
-	    System.err.println( "page(" + page + "): invalid width or height:" + width + "x" + height );
+	    System.err.println( filename + "\timage error (" + page + ")\tinvalid width or height: " + width + "x" + height );
 	}
     }
 }
