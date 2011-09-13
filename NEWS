@@ -1,0 +1,13 @@
+version 20110914
+================
+
+* New TSV format introduced for filter-utility friendly.
+* Add a check for protection permissions.
+* Add a support for some TIFF formats (JBIG2DECODE filter).
+* Add supports for some more errors.
+* Add a support for encrypted PDF files.
+
+version 20110116
+================
+
+* First Release!
