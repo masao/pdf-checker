@@ -78,14 +78,13 @@ public class PdfImageCheckRender implements RenderListener {
 		    outputWidthHeight( width, height );
 		} else {
 		    Image image = Image.getInstance( img_obj.getImageAsBytes() );
-		    System.out.println( filename + "\timagetype (" + page + ")\t" + img_obj.getFileType() );
-		    //System.out.println( filename + "\timagetype (" +page+ ")\t" + img_obj.getImageBytesType() );
-		    if ( image.getDpiX() > 0 && image.getDpiX() > 0 ) {
-			System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getDpiX() );
-			System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getDpiY() );
+		    PdfChecker.output( filename, "page"+page, "imagetype", img_obj.getFileType() );
+		    if ( image.getDpiX() > 0 && image.getDpiY() > 0 ) {
+			PdfChecker.output( filename, "page"+page, "dpi-x", image.getDpiX() );
+			PdfChecker.output( filename, "page"+page, "dpi-y", image.getDpiY() );
 		    } else {
-			System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getScaledWidth() / pagesize.getWidth() * 72f );
-			System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getScaledHeight() / pagesize.getHeight() * 72f );
+			PdfChecker.output( filename, "page"+page, "dpi-x", image.getScaledWidth() / pagesize.getWidth() * 72f );
+			PdfChecker.output( filename, "page"+page, "dpi-y", image.getScaledHeight() / pagesize.getHeight() * 72f );
 		    }
 		}
 	    }
@@ -109,10 +108,13 @@ public class PdfImageCheckRender implements RenderListener {
     private void outputWidthHeight( int width, int height ) {
 	//System.out.println( width + "x" + height );
 	if ( width > 0 && height > 0 ) {
-	    System.out.println( filename + "\tdpi-x (" +page+ ")\t" + width / pagesize.getWidth() * 72f );
-	    System.out.println( filename + "\tdpi-y (" +page+ ")\t" + height / pagesize.getHeight() * 72f );
+	    PdfChecker.output( filename, "page"+page, "dpi-x", width / pagesize.getWidth() * 72f );
+	    PdfChecker.output( filename, "page"+page, "dpi-y", height / pagesize.getHeight() * 72f );
 	} else {
-	    System.err.println( filename + "\timage error (" + page + ")\tinvalid width or height: " + width + "x" + height );
+	    if ( filename != null ) {
+	    	System.err.print( filename + "\t" );
+	    }
+	    System.err.println( "image error (" + page + ")\tinvalid width or height: " + width + "x" + height );
 	}
     }
 }
