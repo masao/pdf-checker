@@ -18,6 +18,7 @@ public class PdfChecker {
     public static void check( String filename, int argc ) throws IOException {
     	PdfReader pdf = new PdfReader( filename );
 	if ( argc == 1 ) {
+	    output( null, "filename", filename );
 	    filename = null;
 	}
 	output( filename, "version", pdf.getPdfVersion() );
