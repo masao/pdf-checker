@@ -10,7 +10,9 @@ import javax.imageio.ImageIO;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfName;
+import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
 import com.itextpdf.text.pdf.parser.PdfImageObject;
 import com.itextpdf.text.pdf.parser.RenderListener;
@@ -55,25 +57,37 @@ public class PdfImageCheckRender implements RenderListener {
     public void renderImage(ImageRenderInfo renderInfo) {
         try {
             PdfImageObject img_obj = renderInfo.getImage();
-            //PdfName filter = (PdfName)img_obj.get(PdfName.FILTER);
+	    PdfDictionary img_dict = img_obj.getDictionary();
+            PdfName filter = img_dict.getAsName(PdfName.FILTER);
 	    //System.out.println( "Image filter:\t" + filter );
-	    //System.out.println( "Image dictionary:\t" + img_obj.getDictionary() );
-	    //Set keys = img_obj.getDictionary().getKeys();
+	    //System.out.println( "Image dictionary:\t" + img_dict );
+	    //Set keys = img_dict.getKeys();
  	    //Iterator i = keys.iterator();
  	    //while( i.hasNext() ) {
-	    //   System.out.println( i.next().toString() );
+	    //    PdfName key = (PdfName) i.next();
+	    //    System.out.println( key.toString() + ":\t" + img_dict.get(key) );
 	    //}
-	    //int width = img_obj.getDictionary().getAsNumber( PdfName.WIDTH ).intValue();
-	    //int height = img_obj.getDictionary().getAsNumber( PdfName.HEIGHT ).intValue();
-	    //System.out.println( width + "x" + height );
-	    Image image = Image.getInstance( img_obj.getImageAsBytes() );
-	    System.out.println( filename + "\timagetype (" +page+ ")\t" + img_obj.getFileType() );
-	    if ( image.getDpiX() > 0 && image.getDpiX() > 0 ) {
-		System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getDpiX() );
-		System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getDpiY() );
+	    int width = img_dict.getAsNumber( PdfName.WIDTH ).intValue();
+	    int height = img_dict.getAsNumber( PdfName.HEIGHT ).intValue();
+	    byte[] bytes = null;
+	    if ( filter == PdfName.JBIG2DECODE ) {
+		outputWidthHeight( width, height );
 	    } else {
-		System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getScaledWidth() / pagesize.getWidth() * 72f );
-		System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getScaledHeight() / pagesize.getHeight() * 72f );
+		bytes = img_obj.getImageAsBytes();
+		if ( bytes == null ) {
+		    outputWidthHeight( width, height );
+		} else {
+		    Image image = Image.getInstance( img_obj.getImageAsBytes() );
+		    System.out.println( filename + "\timagetype (" + page + ")\t" + img_obj.getFileType() );
+		    //System.out.println( filename + "\timagetype (" +page+ ")\t" + img_obj.getImageBytesType() );
+		    if ( image.getDpiX() > 0 && image.getDpiX() > 0 ) {
+			System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getDpiX() );
+			System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getDpiY() );
+		    } else {
+			System.out.println( filename + "\tdpi-x (" +page+ ")\t" + image.getScaledWidth() / pagesize.getWidth() * 72f );
+			System.out.println( filename + "\tdpi-y (" +page+ ")\t" + image.getScaledHeight() / pagesize.getHeight() * 72f );
+		    }
+		}
 	    }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,5 +104,15 @@ public class PdfImageCheckRender implements RenderListener {
 	String content_str = renderInfo.getText();
 	//System.out.println( "Text length:\t" + content_str.length() );
 	result.append( content_str );
+    }
+
+    private void outputWidthHeight( int width, int height ) {
+	//System.out.println( width + "x" + height );
+	if ( width > 0 && height > 0 ) {
+	    System.out.println( filename + "\tdpi-x (" +page+ ")\t" + width / pagesize.getWidth() * 72f );
+	    System.out.println( filename + "\tdpi-y (" +page+ ")\t" + height / pagesize.getHeight() * 72f );
+	} else {
+	    System.err.println( "page(" + page + "): invalid width or height:" + width + "x" + height );
+	}
     }
 }
