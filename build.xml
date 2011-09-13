@@ -23,7 +23,7 @@
   </pathconvert>
   
   <target name="compile">
-    <javac srcdir="${src}" debug="true">
+    <javac srcdir="${src}" debug="true" source="1.4">
       <classpath refid="build.classes"/>
     </javac>
   </target>
