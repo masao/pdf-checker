@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 
 public class PdfChecker {
@@ -23,6 +24,14 @@ public class PdfChecker {
 	}
 	output( filename, "version", pdf.getPdfVersion() );
 	output( filename, "encryption", pdf.isEncrypted() );
+	if ( pdf.isEncrypted() ) {
+	    int permission = pdf.getPermissions();
+	    output( filename, "permission: allow print", ( ( permission & PdfWriter.ALLOW_PRINTING ) == PdfWriter.ALLOW_PRINTING ) );
+	    output( filename, "permission: allow modify", ( ( permission & PdfWriter.ALLOW_MODIFY_CONTENTS ) == PdfWriter.ALLOW_MODIFY_CONTENTS ) );
+	    output( filename, "permission: allow assembly", ( ( permission & PdfWriter.ALLOW_ASSEMBLY ) == PdfWriter.ALLOW_ASSEMBLY ) );
+	    output( filename, "permission: allow copy", ( ( permission & PdfWriter.ALLOW_COPY ) == PdfWriter.ALLOW_COPY ) );
+	    output( filename, "permission: allow screenreader", ( ( permission & PdfWriter.ALLOW_SCREENREADERS ) == PdfWriter.ALLOW_SCREENREADERS ) );
+	}
 	HashMap map = pdf.getInfo();
 	Iterator ite = map.keySet().iterator();
 	while( ite.hasNext() ) {
