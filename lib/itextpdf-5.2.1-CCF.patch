@@ -1,0 +1,24 @@
+Index: itext/src/main/java/com/itextpdf/text/pdf/FilterHandlers.java
+===================================================================
+--- itext/src/main/java/com/itextpdf/text/pdf/FilterHandlers.java	(revision 5107)
++++ itext/src/main/java/com/itextpdf/text/pdf/FilterHandlers.java	(working copy)
+@@ -86,6 +86,7 @@
+         map.put(PdfName.A85, new Filter_ASCII85DECODE());
+         map.put(PdfName.LZWDECODE, new Filter_LZWDECODE());
+         map.put(PdfName.CCITTFAXDECODE, new Filter_CCITTFAXDECODE());
++        map.put(PdfName.CCF, new Filter_CCITTFAXDECODE());
+         map.put(PdfName.CRYPT, new Filter_DoNothing());
+         map.put(PdfName.RUNLENGTHDECODE, new Filter_RUNLENGTHDECODE());
+         
+Index: itext/src/main/java/com/itextpdf/text/pdf/PdfName.java
+===================================================================
+--- itext/src/main/java/com/itextpdf/text/pdf/PdfName.java	(revision 5107)
++++ itext/src/main/java/com/itextpdf/text/pdf/PdfName.java	(working copy)
+@@ -290,6 +290,7 @@
+     public static final PdfName CATEGORY = new PdfName("Category");
+     /** A name */
+     public static final PdfName CCITTFAXDECODE = new PdfName("CCITTFaxDecode");
++    public static final PdfName CCF = new PdfName("CCF");
+     /**
+      * A name.
+      * @since 2.1.6
