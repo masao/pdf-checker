@@ -60,7 +60,9 @@ class TestPdfChecker < Test::Unit::TestCase
          pin, pout, perr = Open3.popen3( "java", "-jar", jarfile, pdf.filename )
          stderr_result = perr.readlines
          stdout_result = pout.readlines
-         assert( stderr_result.size == 0 )
+         assert( stderr_result.size == 0,
+         "Error output for #{ test[:url] }." )
+
          if test[ :dpi ]
             stdout_result.each do |line|
                data = line.chomp.split( /\t/ )
