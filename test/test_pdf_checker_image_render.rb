@@ -55,6 +55,12 @@ class TestPdfChecker < Test::Unit::TestCase
             :dpi => 300,
             :coverpage => true,
          },
+	 {  # Teapot: http://hdl.handle.net/10083/3535
+	    :url => "http://teapot.lib.ocha.ac.jp/ocha/bitstream/10083/3535/1/KJ00004831315.pdf",
+	    :dpi => 398,
+	    :coverpage => true,
+	    :round => true,
+	 },
       ].each do |test|
          pdf = PdfFile.new( test[ :url ], basedir )
          pin, pout, perr = Open3.popen3( "java", "-jar", jarfile, pdf.filename )
@@ -69,7 +75,11 @@ class TestPdfChecker < Test::Unit::TestCase
                if data[0] =~ /\Apage\d+\Z/ and data[1] =~ /\Adpi/
                   # p data
                   next if data[0] == "page1" and test[ :coverpage ]
-                  assert_equal( data[2].to_i, test[:dpi], "DPI for #{ test[:url] } should be #{ test[:dpi] }." )
+		  dpi = data[2].to_i
+		  dpi = data[2].to_f.ceil if test[ :ceil ]
+		  dpi = data[2].to_f.round if test[ :round ]
+		  next if dpi == 0
+                  assert_equal( test[:dpi], dpi, "DPI for #{ test[:url] } should be #{ test[:dpi] } (#{ data[2] })." )
                end
             end
          end
