@@ -1,7 +1,7 @@
 PDF check utitility
 ===================
 
-This tool is able to check PDF properties/contents in a batch mode. It currently checks the following properties of PDF files:
+**Pdf-Checker** allows you to check the properties/contents of any PDF files in a batch mode. This currently checks the following properties of PDF files:
 
 * PDF version
 * Number of pages
@@ -14,7 +14,7 @@ This tool is able to check PDF properties/contents in a batch mode. It currently
 How to use
 ----------
 
-Download the binary package and unpack it. And then run the jar file with specifying the targeted PDF files on command line:
+Download the binary package and unpack it. And then run the jar file with specifying the targeted PDF files on command line, as follows:
 
 <pre>
   % unzip pdf-checker-YYYYMMDD.zip
@@ -47,16 +47,16 @@ Download the binary package and unpack it. And then run the jar file with specif
   .....
 </pre>
 
-An example above means that the file parsed is PDF version 3, is not encrypted, is created at June 27th 2006, is produced by a tool called PDFLib, and has 8 pages. Each page of this file has a size of "595x842" without rotation, an embedded (roughly) 300 DPI resolution image with PNG-style compression, and has corresponding textual contents of 80-1800 characters.
+An example of output above shows that the parsed file is PDF version 3, not encrypted, created at June 27th 2006, produced by a tool called PDFLib, and it contains 8 pages. Each page of the file has a size of "595x842" without rotation, an embedded (roughly) 300 DPI resolution image with PNG-style compression, and its textual contents are 80-1800 characters.
 
-The tool can check multiple files by specifying them as arguments. When specifying multiple files, the first column shows each filename.
+The tool can check multiple files at a time by specifying them as arguments. When specifying multiple files, the first column shows each filename.
 
-As output format is a simple text file with tab-separated, you can check it further via other applications like Excel.
-
+As the output format is a simple text file with tab-separated, you can read and analyze the results via other applications like Excel.
 
 Links
 -----
 
-This tool uses and bundles iText PDF Library and Legion of the Bouncy Castle Java cryptography APIs. Source codes and detailed information is available under:
+Pdf-Checker uses and bundles iText PDF Library and Legion of the Bouncy Castle Java cryptography APIs. Source codes and detailed information is available under:
+
 * iText: <http://itextpdf.com/>
 * Bouncy Castle Crypto APIs: <http://www.bouncycastle.org/java.html>
