@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.parser.ImageRenderInfo;
+import com.itextpdf.text.pdf.parser.Matrix;
 import com.itextpdf.text.pdf.parser.PdfImageObject;
 import com.itextpdf.text.pdf.parser.RenderListener;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
@@ -78,13 +79,31 @@ public class PdfImageCheckRender implements RenderListener {
 		    outputWidthHeight( width, height );
 		} else {
 		    Image image = Image.getInstance( img_obj.getImageAsBytes() );
+		    //PdfDictionary dic = image.getAdditional();
+		    //if (dic != null) {
+		    //    System.out.println( "Image dictionary: " + dic + "\t" + dic.size() );
+		    //    Set k = dic.getKeys();
+		    //    Iterator j = k.iterator();
+		    //    while( j.hasNext() ) {
+		    //        System.out.println( j.next() );
+		    //    }
+		    //}
+		    //System.out.println( "area: " + renderInfo.getArea() );
+		    //System.out.println( "ctm: " + renderInfo.getImageCTM() );
+		    //System.out.println( "size:" + image.getWidth() + "x" + image.getHeight() +"\tgetWidthPercentage:" + image.getWidthPercentage() );
+		    //System.out.println( "scaled width:" + image.getScaledWidth() );
+		    //System.out.println( "scaled height:" + image.getScaledHeight() );
+		    //System.out.println( "pagesize:" + pagesize.getWidth() + "x" + pagesize.getHeight() + "\t" + image.getAbsoluteX() );
 		    PdfChecker.output( filename, "page"+page, "imagetype", img_obj.getFileType() );
 		    if ( image.getDpiX() > 0 && image.getDpiY() > 0 ) {
 			PdfChecker.output( filename, "page"+page, "dpi-x", image.getDpiX() );
 			PdfChecker.output( filename, "page"+page, "dpi-y", image.getDpiY() );
 		    } else {
-			PdfChecker.output( filename, "page"+page, "dpi-x", image.getScaledWidth() / pagesize.getWidth() * 72f );
-			PdfChecker.output( filename, "page"+page, "dpi-y", image.getScaledHeight() / pagesize.getHeight() * 72f );
+			Matrix ctm = renderInfo.getImageCTM();
+			float widthScale = ctm.get( Matrix.I11 );
+			float heightScale = ctm.get( Matrix.I22 );
+			PdfChecker.output( filename, "page"+page, "dpi-x", image.getScaledWidth() / widthScale * 72f );
+			PdfChecker.output( filename, "page"+page, "dpi-y", image.getScaledHeight() / heightScale * 72f );
 		    }
 		}
 	    }
